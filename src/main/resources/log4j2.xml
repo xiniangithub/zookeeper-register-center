@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="off">
+	<Properties>
+		<Property name="baseDir">logs</Property>
+	</Properties>
+	
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout charset="UTF-8" pattern="[%-5p] [%d{HH:mm:ss}] %c - %m%n" />
+		</Console>
+		
+		<!--trace级别日志输出-->
+		<RollingFile name="system-trace"
+			fileName="${baseDir}/trace.log" filePattern="${baseDir}/trace-%i.log">
+			<Filters>
+                <ThresholdFilter level="debug" onMatch="DENY" onMismatch="NEUTRAL"/>  
+                <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+			<PatternLayout charset="UTF-8" pattern="[%d{yyyy/MM/dd HH:mm:ssS}][%p][%l]%n%m%n" />
+			<Policies>
+				<!-- 日志文件大小 -->
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<!-- 保存最大文件个数 -->
+			<DefaultRolloverStrategy max="50" />
+		</RollingFile>
+		<!--Info级别日志输出-->
+		<RollingFile name="system-info"
+			fileName="${baseDir}/info.log" filePattern="${baseDir}/info-%i.log">
+			<Filters>
+                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>  
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+			<PatternLayout charset="UTF-8" pattern="[%d{yyyy/MM/dd HH:mm:ssS}][%p][%l]%n%m%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="50" />
+		</RollingFile>
+		<!--debug级别日志输出-->
+		<RollingFile name="system-debug"
+			fileName="${baseDir}/debug.log" filePattern="${baseDir}/debug-%i.log">
+			<Filters>
+                <ThresholdFilter level="info" onMatch="DENY" onMismatch="NEUTRAL"/>  
+                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+			<PatternLayout charset="UTF-8" pattern="[%d{yyyy/MM/dd HH:mm:ssS}][%p][%l]%n%m%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="50" />
+		</RollingFile>
+		<!--Error级别日志输出-->
+		<RollingFile name="system-error"
+			fileName="${baseDir}/error.log" filePattern="${baseDir}/error-%i.log">
+			<Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+			<PatternLayout charset="UTF-8" pattern="[%d{yyyy/MM/dd HH:mm:ssS}][%p][%l]%n%m%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="50" />
+		</RollingFile>
+	</Appenders>
+	
+	<Loggers>
+		<logger name="org.springframework" level="INFO"></logger>
+		<root level="debug">
+			<appender-ref ref="console" />
+			<appender-ref ref="system-info" />
+			<appender-ref ref="system-trace" />
+			<appender-ref ref="system-debug" />
+			<appender-ref ref="system-error" />
+		</root>
+	</Loggers>
+</configuration>  
